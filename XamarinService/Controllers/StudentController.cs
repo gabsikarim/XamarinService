@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Vives.BLL;
+using Vives.DOMAIN;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,36 +14,95 @@ namespace XamarinService.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        // GET: api/<StudentController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        StudentManager studentManager = new StudentManager();
+
+        // GET api/student/getbyid/5
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById([FromQuery(Name ="id")] int id)
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                Student student = await studentManager.GetByIdAsync(id);
+                return Ok(new JsonResult(student));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // GET api/<StudentController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("Get")]
+        //[ValidateModel]
+        public async Task<IActionResult> Get([FromQuery(Name = "skip")] int skip, [FromQuery(Name = "take")] int take)
         {
-            return "value";
+            try
+            {
+                if (take == 0)
+                    take = 1;
+
+                IEnumerable<Student> students = await studentManager.GetAsync(skip, take);
+                return Ok(new JsonResult(students));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // POST api/<StudentController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("Create")]
+        //localhost:5000/api/student/create?Id=0&firstname=test&....
+        public async Task<IActionResult> Create([FromBody] Student student)
         {
+            try
+            {
+                if (student == null)
+                    throw new NullReferenceException();
+
+                student = await studentManager.CreateAsync(student);
+                return Ok(new JsonResult(student));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // PUT api/<StudentController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("Update")]
+        //[ValidateModel]
+        public async Task<IActionResult> Update([FromBody] Student student)
         {
+            try
+            {
+                if (student == null)
+                    throw new NullReferenceException();
+
+                student = await studentManager.UpdateAsync(student);
+                return Ok(new JsonResult(student));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // DELETE api/<StudentController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPost("Delete")]
+        //[ValidateModel]
+        public async Task<IActionResult> Delete([FromBody] Student student)
         {
+            try
+            {
+                if (student == null)
+                    throw new NullReferenceException();
+
+                student = await studentManager.DeleteAsync(student);
+                return Ok(new JsonResult(student));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
+        
     }
 }

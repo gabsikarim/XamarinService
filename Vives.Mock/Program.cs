@@ -19,7 +19,7 @@ namespace Vives.Mock
 
             Faker<Course> fake_courses = new Faker<Course>()
                 .RuleFor(x => x.Name, f => f.Name.JobTitle())
-                .RuleFor(x => x.SP, f => f.Random.Int(1, 10));
+                .RuleFor(x => x.SP, f => f.Random.Int(1, 20));
 
             Console.WriteLine("Creating Mock Courses...");
             IEnumerable<Course> myCourses = courseManager.CreateRangeAsync(fake_courses.GenerateBetween(5, 15).ToList()).Result;
@@ -31,7 +31,7 @@ namespace Vives.Mock
                 .RuleFor(x => x.Private_Email, (f, x) => f.Internet.Email(x.Firstname, x.Lastname));
 
             Console.WriteLine("Creating Mock Students...");
-            IEnumerable<Student> myStudents = studentManager.CreateRangeAsync(fake_students.GenerateBetween(10, 100).ToList()).Result;
+            IEnumerable<Student> myStudents = studentManager.CreateRangeAsync(fake_students.GenerateBetween(200, 500).ToList()).Result;
 
 
             Faker<StudentCourse> fake_enrollments = new Faker<StudentCourse>()

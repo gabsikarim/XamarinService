@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Vives.DAL\Vives.DAL.csproj" />
-    <ProjectReference Include="..\Vives.DOMAIN\Vives.DOMAIN.csproj" />
   </ItemGroup>
 
 </Project>

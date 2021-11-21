@@ -10,8 +10,8 @@ using Vives.DAL;
 namespace Vives.DAL.Migrations
 {
     [DbContext(typeof(VivesContext))]
-    [Migration("20211119034616_Test")]
-    partial class Test
+    [Migration("20211121152532_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
